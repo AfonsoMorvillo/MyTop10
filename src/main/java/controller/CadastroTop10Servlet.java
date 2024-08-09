@@ -1,4 +1,4 @@
-package edu.ifsp.web;
+package controller;
 
 import java.io.IOException;
 
@@ -7,8 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import edu.ifsp.web.templates.Template;
 
 @WebServlet("/cadastro")
 public class CadastroTop10Servlet extends HttpServlet {

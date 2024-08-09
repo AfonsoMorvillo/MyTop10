@@ -1,4 +1,4 @@
-package edu.ifsp.web.templates;
+package controller;
 
 import java.util.logging.Logger;
 
