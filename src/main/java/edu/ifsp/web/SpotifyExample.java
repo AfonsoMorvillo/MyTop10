@@ -23,6 +23,10 @@ public class SpotifyExample {
             .setClientSecret(clientSecret)
             .setRedirectUri(redirectUri)
             .build();
+    
+    public static SpotifyApi getSpotifyApi() {
+       return spotifyApi;
+    }
 
     public static void clientCredentials_Sync() {
         try {

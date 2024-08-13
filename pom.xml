@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>teste</groupId>
-	<artifactId>teste</artifactId>
+	<groupId>MyTop10</groupId>
+	<artifactId>MyTop10</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
@@ -19,6 +19,13 @@
 			<artifactId>thymeleaf</artifactId>
 			<version>3.0.12.RELEASE</version>
 		</dependency>
+		
+		<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20210307</version> <!-- Verifique a última versão disponível -->
+</dependency>
+
 
 		<!-- Thymeleaf Servlet -->
 		<dependency>
