@@ -1,6 +1,10 @@
 package edu.ifsp.web;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.hc.core5.http.ParseException;
 import org.json.JSONObject;
 
+import controller.DatabaseUtil;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Track;
@@ -26,6 +31,8 @@ public class BuscarMusica extends HttpServlet {
         response.setContentType("application/json"); // Define o tipo de conteúdo como JSON
         response.setCharacterEncoding("UTF-8"); // Define a codificação como UTF-8
 
+        teste();
+        
         try {
             String musicaBusca = request.getParameter("musicaBusca");
             
@@ -64,6 +71,26 @@ public class BuscarMusica extends HttpServlet {
             return new MusicaInfo(); // Ou considere lançar uma exceção ou retornar um JSON com uma mensagem de erro
         }
     }
+    
+    public void teste() {
+       try (Connection conn = DatabaseUtil.getConnection();
+            Statement stmt = conn.createStatement()) {
+
+           String selectSQL = "SELECT * FROM musica";
+           ResultSet rs = stmt.executeQuery(selectSQL);
+
+           while (rs.next()) {
+               int id = rs.getInt("id");
+               String descricao = rs.getString("descricao");
+               System.out.println("ID: " + id + ", Descrição: " + descricao);
+           }
+
+           rs.close();
+
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+   }
 
     // Classe auxiliar para armazenar informações da música
     private class MusicaInfo {

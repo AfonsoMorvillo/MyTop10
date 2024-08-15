@@ -19,12 +19,20 @@
 			<artifactId>thymeleaf</artifactId>
 			<version>3.0.12.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
-    <groupId>org.json</groupId>
-    <artifactId>json</artifactId>
-    <version>20210307</version> <!-- Verifique a última versão disponível -->
-</dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.1.214</version> <!-- Use a versão que você precisa -->
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version> <!-- Verifique a última versão disponível -->
+		</dependency>
 
 
 		<!-- Thymeleaf Servlet -->
