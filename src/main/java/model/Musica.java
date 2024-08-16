@@ -1,23 +1,24 @@
 package model;
 
 public class Musica {
-	private int id;
-	private String descricao;
+	private String id;
+	private int ordem;
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public int getOrdem() {
+		return ordem;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setOrdem(int ordem) {
+		this.ordem = ordem;
 	}
+	
 
 }
