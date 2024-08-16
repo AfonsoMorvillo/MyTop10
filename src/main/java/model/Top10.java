@@ -1,17 +1,12 @@
 package model;
 
+import java.util.List;
+
 public class Top10 {
-	private int id;
-	private String descricao;
 	private String titulo;
+	private String descricao;
+	private List<Musica> musicas;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getDescricao() {
 		return descricao;
@@ -28,4 +23,18 @@ public class Top10 {
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
+
+	public List<Musica> getMusicas() {
+		return musicas;
+	}
+
+	public void setMusicas(List<Musica> musicas) {
+		this.musicas = musicas;
+	}
+
+	public Top10(String descricao, String titulo) {
+		this.descricao = descricao;
+		this.titulo = titulo;
+	}
+	
 }

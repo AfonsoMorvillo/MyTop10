@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.ifsp.web.templates.Template;
+import model.Top10;
+import model.Top10DAO;
 
 @WebServlet("/novo")
 public class CadastroTop10Servlet extends HttpServlet {
@@ -25,8 +27,9 @@ public class CadastroTop10Servlet extends HttpServlet {
          
       request.setAttribute( "usuario", nome);
       request.setAttribute( "senha", descricao );
-         
-      
+      Top10DAO top10dao = new Top10DAO();
+      int criaTop10 = top10dao.criaTop10( new Top10(descricao , nome));
+      System.out.println(criaTop10);
 
    }
 }
