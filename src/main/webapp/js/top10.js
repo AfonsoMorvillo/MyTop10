@@ -2,14 +2,19 @@ async function salvarTop10() {
     const buscarMusicaUrl = '/MyTop10/salvar'; // URL para o servlet
     const cardData = [];
     
+    // Extrair o ID da URL
+    const urlParts = window.location.pathname.split('/');
+    const id = urlParts[urlParts.length - 1];
+    
     rows.forEach((row, index) => {
         const card = row.querySelector('.card');
         if (card) {
-			const musicId = card.dataset.musicId;
-			
+            const musicId = card.dataset.musicId;
+            
             const cardInfo = {
                 id: musicId,
-                posicao: index + 1 // Define a posição exata baseada na linha (1-indexado)
+                posicao: index + 1, // Define a posição exata baseada na linha (1-indexado)
+                top10Id: id // Adiciona o ID extraído da URL
             };
             cardData.push(cardInfo);
         }
@@ -35,5 +40,3 @@ async function salvarTop10() {
         console.error('Erro ao enviar os dados:', error);
     }
 }
-
-

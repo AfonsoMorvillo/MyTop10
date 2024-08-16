@@ -10,7 +10,7 @@ import java.util.List;
 import controller.DatabaseConnection;
 
 public class MusicaTop10DAO {
-	public void salvarTop10(int id, Musica[] musicas ) throws SQLException {
+	public void salvarTop10(int id, ArrayList<Musica> musicas ) throws SQLException {
         DatabaseConnection instance = DatabaseConnection.getInstance();
         Connection conn = instance.getConn();
 
@@ -61,18 +61,18 @@ public class MusicaTop10DAO {
     }
 
     
-    public List<MusicaTop10> listarMusicaTop10PorTitulo(String tituloSubstring) {
+    public List<MusicaTop10> listarMusicaTop10PorTitulo(Integer chave) {
         List<MusicaTop10> resultado = new ArrayList<>();
         String sql = "SELECT m.Descricao AS musica_descricao, m.ordem_musica, t.Titulo AS top10_titulo, t.Descricao AS top10_descricao " +
                      "FROM musica_top10 mt " +
                      "LEFT JOIN musica m ON mt.ID_musica = m.ID " +
                      "LEFT JOIN top10 t ON mt.ID_top10 = t.ID " +
-                     "WHERE t.Titulo LIKE ?"; 
+                     "WHERE t.id = ?"; 
 
         try (Connection conn = DatabaseConnection.getInstance().getConn();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, "%" + tituloSubstring + "%"); 
+            ps.setInt(1,chave); 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     MusicaTop10 item = new MusicaTop10();

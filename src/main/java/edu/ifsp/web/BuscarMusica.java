@@ -58,7 +58,7 @@ public class BuscarMusica extends HttpServlet {
       SpotifyExample.clientCredentials_Sync();
       SearchTracksRequest searchTracksRequest = SpotifyExample.getSpotifyApi().searchTracks( musica ).build();
       final Paging<Track> trackPaging = searchTracksRequest.execute();
-      
+//      
 //      String trackIdsString = String.join(",", trackIds); // Converte a lista de IDs em uma string separada por vírgulas
 //      GetTracksRequest getTracksRequest = SpotifyExample.getSpotifyApi().getTracks(trackIdsString).build();
 //      final List<Track> tracks = getTracksRequest.execute().getTracks();

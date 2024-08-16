@@ -3,8 +3,14 @@ package model;
 public class Musica {
 	private String id;
 	private int ordem;
+	
 
-	public String getId() {
+	public Musica( String id, int ordem ) {
+      this.id = id;
+      this.ordem = ordem;
+   }
+
+   public String getId() {
 		return id;
 	}
 
