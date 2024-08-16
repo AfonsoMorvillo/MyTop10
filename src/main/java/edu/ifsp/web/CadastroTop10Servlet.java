@@ -29,7 +29,8 @@ public class CadastroTop10Servlet extends HttpServlet {
       request.setAttribute( "senha", descricao );
       Top10DAO top10dao = new Top10DAO();
       int criaTop10 = top10dao.criaTop10( new Top10(descricao , nome));
-      System.out.println(criaTop10);
+      
+      response.sendRedirect(request.getContextPath() + "/top10/" + criaTop10);
 
    }
 }
