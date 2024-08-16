@@ -1,16 +1,16 @@
 async function salvarTop10() {
     const buscarMusicaUrl = '/MyTop10/salvar'; // URL para o servlet
-    const boardTop10 = document.querySelector('.board');
-    
-    const cards = boardTop10.querySelectorAll('.card');
-    
     const cardData = [];
     
-    cards.forEach(card => {
-        const cardInfo = {
-            id: card.id,
-        };
-        cardData.push(cardInfo);
+    rows.forEach((row, index) => {
+        const card = row.querySelector('.card');
+        if (card) {
+            const cardInfo = {
+                id: card.id,
+                posicao: index + 1 // Define a posição exata baseada na linha (1-indexado)
+            };
+            cardData.push(cardInfo);
+        }
     });
     
     const data = JSON.stringify(cardData);

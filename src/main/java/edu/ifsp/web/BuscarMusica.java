@@ -57,12 +57,17 @@ public class BuscarMusica extends HttpServlet {
       SpotifyExample.clientCredentials_Sync();
       SearchTracksRequest searchTracksRequest = SpotifyExample.getSpotifyApi().searchTracks( musica ).build();
       final Paging<Track> trackPaging = searchTracksRequest.execute();
+      
+//      String trackIdsString = String.join(",", trackIds); // Converte a lista de IDs em uma string separada por vírgulas
+//      GetTracksRequest getTracksRequest = SpotifyExample.getSpotifyApi().getTracks(trackIdsString).build();
+//      final List<Track> tracks = getTracksRequest.execute().getTracks();
 
       if( trackPaging.getItems().length > 0 ){
          Track track = trackPaging.getItems()[ 0 ];
 
          // Prepara as informações da música para enviar como JSON
          MusicaInfo musicaInfo = new MusicaInfo();
+         musicaInfo.setNome( track.getId() );
          musicaInfo.setNome( track.getName() );
          musicaInfo.setCapa( track.getAlbum().getImages()[ 0 ].getUrl() );
          return musicaInfo;
