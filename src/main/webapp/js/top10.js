@@ -5,8 +5,10 @@ async function salvarTop10() {
     rows.forEach((row, index) => {
         const card = row.querySelector('.card');
         if (card) {
+			const musicId = card.dataset.musicId;
+			
             const cardInfo = {
-                id: card.id,
+                id: musicId,
                 posicao: index + 1 // Define a posição exata baseada na linha (1-indexado)
             };
             cardData.push(cardInfo);

@@ -41,6 +41,7 @@ public class BuscarMusica extends HttpServlet {
          JSONObject jsonResponse = new JSONObject();
          jsonResponse.put( "nome", musicaInfo.getNome() );
          jsonResponse.put( "capa", musicaInfo.getCapa() );
+         jsonResponse.put( "id", musicaInfo.getId());
 
          // Envia a resposta como JSON
          response.getWriter().print( jsonResponse.toString() );
@@ -67,7 +68,7 @@ public class BuscarMusica extends HttpServlet {
 
          // Prepara as informações da música para enviar como JSON
          MusicaInfo musicaInfo = new MusicaInfo();
-         musicaInfo.setNome( track.getId() );
+         musicaInfo.setId( track.getId() );
          musicaInfo.setNome( track.getName() );
          musicaInfo.setCapa( track.getAlbum().getImages()[ 0 ].getUrl() );
          return musicaInfo;
@@ -99,6 +100,7 @@ public class BuscarMusica extends HttpServlet {
     private class MusicaInfo {
         private String nome;
         private String capa;
+        private String id;
 
         public String getNome() {
             return nome;
@@ -107,6 +109,14 @@ public class BuscarMusica extends HttpServlet {
         public void setNome(String nome) {
             this.nome = nome;
         }
+        
+        public String getId() {
+           return id;
+       }
+
+       public void setId(String id) {
+           this.id = id;
+       }
 
         public String getCapa() {
             return capa;

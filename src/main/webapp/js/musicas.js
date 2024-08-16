@@ -39,6 +39,8 @@ async function adicionarMusica() {
 		novaDiv.className = 'card';
 		novaDiv.id = `musica-${nextId}`;
 		novaDiv.draggable = true; // Torna a div arrastável
+		
+		novaDiv.dataset.musicId = data.id;
 
 		novaDiv.ondragstart = onDragStart;
 		novaDiv.ondragend = onDragEnd;

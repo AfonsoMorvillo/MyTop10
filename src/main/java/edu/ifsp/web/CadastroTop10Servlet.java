@@ -10,10 +10,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ifsp.web.templates.Template;
 
-@WebServlet("/cadastro")
+@WebServlet("/novo")
 public class CadastroTop10Servlet extends HttpServlet {
 
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {      
-      Template.render("top10/index", request, response);      
+      Template.render("top10/novo", request, response);      
+   }
+   
+   protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+
+      String nome = request.getParameter( "nome" );
+      String descricao = request.getParameter( "descricao" );
+
+         
+      request.setAttribute( "usuario", nome);
+      request.setAttribute( "senha", descricao );
+         
+      
+
    }
 }

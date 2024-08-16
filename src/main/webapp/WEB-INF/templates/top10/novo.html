@@ -1,12 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta charset="UTF-8">
-	<title>Top10</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro Top10</title>
 	
-</head>
+	<link rel="stylesheet" th:href="@{/css/cadastroTop10.css}">
+  </head>
 <body>
-<h1>Novo top10</h1>
+    <div class="container">
+		<form action="novo" method="post">
+			
+			<div class="input-box">
+			<label for="nome">Nome top10</label>
+			<input type="text" id="nome" name="nome" required="nome" minlength="3">
+			</div>
+			
+			<div  class="input-box">
+			<label for="descricao">Descrição</label>
+			<input type="text" id="descricao" name="descricao" >
+			</div>
+			
+			<div class="button-box">
+			<button class="button-style" type="submit" value="submit">Salvar</button>
+			</div>
+			</form>
+		</div>
 
-</body>
+  </body>
 </html>
