@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,10 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.hc.core5.http.ParseException;
+
 import edu.ifsp.web.templates.Template;
 import model.Musica;
 import model.MusicaTop10;
 import model.MusicaTop10DAO;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 import se.michaelthelin.spotify.requests.data.tracks.GetSeveralTracksRequest;
 
@@ -48,79 +52,47 @@ public class Top10Servlet extends HttpServlet {
    }
 
 
-   private ArrayList<MusicaInfo> setMusicas( Map<Integer, Musica> mapa, int chave ) {
+   private void setMusicas( Map<Integer, Musica> mapa, int chave ) {
 
       List<MusicaTop10> listarMusicaTop10PorTitulo = new MusicaTop10DAO().listarMusicaTop10PorTitulo( chave );
-      List<String> tracks = new ArrayList<>();
 
-      // SpotifyExample.clientCredentials_Sync();
+      if (listarMusicaTop10PorTitulo.isEmpty()) {
+         return;
+      }
+      
+      List<String> musicasID = listarMusicaTop10PorTitulo.stream().map( m -> m.getMusica().getId() ).collect( Collectors.toList() );
 
-      String trackIdsString = String.join( ",", tracks ); // Converte a lista de IDs em uma string separada por vírgulas
+      SpotifyExample.clientCredentials_Sync();
+
+      String trackIdsString = String.join( ",", musicasID ); // Converte a lista de IDs em uma string separada por vírgulas
+      
       GetSeveralTracksRequest several = SpotifyExample.getSpotifyApi().getSeveralTracks( trackIdsString ).build();
 
-      Track[] track = several.execute();
+      Track[] tracks;
+      try{
+         tracks = several.execute();
 
-      // Prepara as informações da música para enviar como JSON
-
-      ArrayList<MusicaInfo> musicas = new ArrayList<>();
-
-      for( Track track2 : track ){
-
-         MusicaInfo musicaInfo = new MusicaInfo();
-
-         musicaInfo.setId( track2.getId() );
-         musicaInfo.setNome( track2.getName() );
-         musicaInfo.setCapa( track2.getAlbum().getImages()[ 0 ].getUrl() );
-         musicas.add( musicaInfo );
+         for( Track track : tracks ){
+            listarMusicaTop10PorTitulo.stream().forEach( m -> {
+               Musica musica = m.getMusica();
+               if( musica.getId().equals( track.getId() ) ){
+                  musica.setId( track.getId() );
+                  musica.setTitulo( track.getName() );
+                  musica.setCapa( track.getAlbum().getImages()[ 0 ].getUrl() );
+                  musica.setAlbum( track.getAlbum().getName());
+                  musica.setArtista( track.getArtists()[0].getName() );
+                  mapa.put( m.getMusica().getOrdem(), musica );
+               }
+            } );
+            ;
+         }
       }
-      
-      for( MusicaInfo musi : musicas ){
-//         tracks.add( musica.getMusica().getId() );
-         // int ordem = musica.getMusica().getOrdem();
-         //
-         // mapa.put( ordem, musica.getMusica() );
+      catch( Exception e ){
+         e.printStackTrace();
       }
-      
-
-      return musicas;
-
 
    }
 
-   private class MusicaInfo {
-      private String nome;
-      private String capa;
-      private String id;
-
-      public String getNome() {
-         return nome;
-      }
-
-
-      public void setNome( String nome ) {
-         this.nome = nome;
-      }
-
-
-      public String getId() {
-         return id;
-      }
-
-
-      public void setId( String id ) {
-         this.id = id;
-      }
-
-
-      public String getCapa() {
-         return capa;
-      }
-
-
-      public void setCapa( String capa ) {
-         this.capa = capa;
-      }
-   }
 
    @Override
    protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {

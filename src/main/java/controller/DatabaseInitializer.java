@@ -1,11 +1,11 @@
 package controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -15,24 +15,19 @@ import javax.servlet.annotation.WebListener;
 public class DatabaseInitializer implements ServletContextListener {
 
    @Override
-   public void contextInitialized( ServletContextEvent sce ) {
-      try{
-         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
-         dbConnection.createStatement();
-         
-         Statement stmt = dbConnection.getStatement();
+   public void contextInitialized(ServletContextEvent sce) {
+       DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
-         // Executar o script schema.sql
-         executeSqlScript( "schema.sql", stmt );
-         executeSqlScript( "data.sql", stmt );
-//         teste( stmt );
+       try {
+           executeSqlScript("schema.sql", dbConnection);
+           executeSqlScript("data.sql", dbConnection);
 
-      }
-      catch( SQLException e ){
-         e.printStackTrace();
-      }
+       } catch (SQLException e) {
+           e.printStackTrace();
+       } finally {
+           dbConnection.close(); 
+       }
    }
-
 
    @Override
    public void contextDestroyed( ServletContextEvent sce ) {
@@ -40,45 +35,23 @@ public class DatabaseInitializer implements ServletContextListener {
    }
 
 
-   private void executeSqlScript( String scriptPath, Statement stmt ) {
-      try( BufferedReader reader = new BufferedReader( new InputStreamReader( getClass().getClassLoader().getResourceAsStream( scriptPath ) ) )){
+   private void executeSqlScript(String scriptName, DatabaseConnection dbConnection) throws SQLException {
+      try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(scriptName);
+           BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+          String line;
+          StringBuilder sqlBuilder = new StringBuilder();
 
-         String line;
-         StringBuilder sql = new StringBuilder();
-
-         while( ( line = reader.readLine() ) != null ){
-            sql.append( line ).append( "\n" );
-            // Executar comandos em blocos
-            if( line.trim().endsWith( ";" ) ){
-               stmt.execute( sql.toString() );
-               sql.setLength( 0 );
-            }
-         }
-
-         // Executar o restante, se houver
-         if( sql.length() > 0 ){
-            stmt.execute( sql.toString() );
-         }
-
+          while ((line = reader.readLine()) != null) {
+              sqlBuilder.append(line);
+              if (line.trim().endsWith(";")) {
+                  try (PreparedStatement ps = dbConnection.prepareStatement(sqlBuilder.toString(), PreparedStatement.NO_GENERATED_KEYS)) {
+                      ps.execute();
+                  }
+                  sqlBuilder.setLength(0); // Limpa o StringBuilder para o próximo comando
+              }
+          }
+      } catch (IOException e) {
+          e.printStackTrace();
       }
-      catch( Exception e ){
-         e.printStackTrace();
-      }
-   }
-
-
-   public void teste( Statement stmt ) throws SQLException {
-
-      String selectSQL = "SELECT * FROM musica";
-      ResultSet rs = stmt.executeQuery( selectSQL );
-
-      while( rs.next() ){
-         int id = rs.getInt( "id" );
-         String descricao = rs.getString( "descricao" );
-         System.out.println( "ID: " + id + ", Descrição: " + descricao );
-      }
-
-      rs.close();
-
-   }
+  }
 }

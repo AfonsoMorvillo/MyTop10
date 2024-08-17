@@ -3,8 +3,19 @@ package model;
 public class MusicaTop10 {
 	private Musica musica;
 	private Top10 top10;
+	
 
-	public Musica getMusica() {
+	public MusicaTop10(  ) {
+	   this.musica = new Musica();
+	   this.top10 = new Top10(  );
+	}
+	
+	public MusicaTop10( Musica musica, Top10 top10 ) {
+      this.musica = musica;
+      this.top10 = top10;
+   }
+
+   public Musica getMusica() {
 		return musica;
 	}
 

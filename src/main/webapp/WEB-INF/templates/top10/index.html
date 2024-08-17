@@ -12,12 +12,17 @@
 
 	<div class="container">
 		<div class="board">
-			<div th:each="entry : ${mapa}" class="row">
+			<div th:each="entry, stat: ${mapa}" class="row">
 				<div class="label" th:text="${entry.key}"></div>
-				<div th:if="${entry.value != null}" class="card" id="second"
-					draggable="true">
-					<img class="card-img" src="https://marketplace.canva.com/EAFctkUT4qU/1/0/1600w/canva-colorful-cool-lonely-man-watching-the-sunset-photo-album-cover-2aE_LYxWtEI.jpg" alt="Teste">
-					<div class="card-title">Teste</div>
+				<div th:if="${entry.value != null}" 
+					class="card" 
+					th:id="${stat.index}"
+					th:attr="draggable='true', data-music-id=${entry.value.id}">
+					<img class="card-img" th:src="@{${entry.value.capa}}">
+					<div class="card-info">
+						<div class="card-title" th:text="${entry.value.titulo}"></div>
+						<div class="card-album" th:text="${entry.value.album} + ' • ' + ${entry.value.artista}"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -28,13 +33,6 @@
 					<input type="text" id="musica" value="musica">
 					<button class="button" onclick="adicionarMusica()"></button>
 				</div>
-			</div>
-			<div class="card" id="second" draggable="true">
-				<img class="card-img"
-					src="https://marketplace.canva.com/EAFctkUT4qU/1/0/1600w/canva-colorful-cool-lonely-man-watching-the-sunset-photo-album-cover-2aE_LYxWtEI.jpg"
-					alt="teste">
-				<div class="card-title">Teste</div>
-
 			</div>
 		</div>
 	</div>

@@ -6,7 +6,10 @@ public class Top10 {
 	private String titulo;
 	private String descricao;
 	private List<Musica> musicas;
-
+	
+	public Top10() {
+	   
+	}
 
 	public String getDescricao() {
 		return descricao;
