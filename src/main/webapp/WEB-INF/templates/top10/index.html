@@ -18,7 +18,7 @@
 					class="card" 
 					th:id="${stat.index}"
 					th:attr="draggable='true', data-music-id=${entry.value.id}">
-					<img class="card-img" th:src="@{${entry.value.capa}}">
+					<img class="card-img" th:src="@{${entry.value.capa}}" th:attr="draggable='true'">
 					<div class="card-info">
 						<div class="card-title" th:text="${entry.value.titulo}"></div>
 						<div class="card-album" th:text="${entry.value.album} + ' • ' + ${entry.value.artista}"></div>
