@@ -46,6 +46,7 @@ async function adicionarMusica() {
         cardImg.src = data.capa;
         cardImg.alt = 'Capa da música';
         cardImg.className = 'card-img';
+        cardImg.draggable = false
 
         const cardInfo = document.createElement('div');
         cardInfo.className = 'card-info';
