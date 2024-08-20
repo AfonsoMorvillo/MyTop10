@@ -1,0 +1,31 @@
+<!DOCTYPE html>produto:
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Meus top's 10</title>
+</head>
+<body>
+<h1>Top10 cadastrados:</h1>
+<table>
+	<tr>
+		<th>Titulo</th>
+		<th>Descrição</th>
+		<th colspan="2"></th>
+	</tr>
+	
+	<tr th:each="top10: ${tops10}">
+		<td th:text="${top10.top10.titulo}"></td>		
+		<td th:text="${top10.top10.descricao}"></td>
+		
+<!-- 		<td> -- Vai que vc queira adicionar o editar> 
+<!-- 			<span class="operacao"><a th:href="|editar?id=${produto.id}|">Editar</a></span> -->
+<!-- 		</td> -->
+	</tr>
+</table>
+
+</body>
+</html>
+
+
+
+
