@@ -1,59 +1,57 @@
 package controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.SQLException;
 
 @WebListener
 public class DatabaseInitializer implements ServletContextListener {
 
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        try (Connection conn = DatabaseUtil.getConnection();
-             Statement stmt = conn.createStatement()) {
+   @Override
+   public void contextInitialized(ServletContextEvent sce) {
+       DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
-            // Executar o script schema.sql
-            executeSqlScript("schema.sql", stmt);
+       try {
+           executeSqlScript("schema.sql", dbConnection);
+           executeSqlScript("data.sql", dbConnection);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+       } catch (SQLException e) {
+           e.printStackTrace();
+       } finally {
+           dbConnection.close(); 
+       }
+   }
 
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        // Limpeza, se necessário
-    }
+   @Override
+   public void contextDestroyed( ServletContextEvent sce ) {
+      // Limpeza, se necessário
+   }
 
-    private void executeSqlScript(String scriptPath, Statement stmt) {
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(getClass().getClassLoader().getResourceAsStream(scriptPath)))) {
 
-            String line;
-            StringBuilder sql = new StringBuilder();
+   private void executeSqlScript(String scriptName, DatabaseConnection dbConnection) throws SQLException {
+      try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(scriptName);
+           BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+          String line;
+          StringBuilder sqlBuilder = new StringBuilder();
 
-            while ((line = reader.readLine()) != null) {
-                sql.append(line).append("\n");
-                // Executar comandos em blocos
-                if (line.trim().endsWith(";")) {
-                    stmt.execute(sql.toString());
-                    sql.setLength(0);
-                }
-            }
-            
-            // Executar o restante, se houver
-            if (sql.length() > 0) {
-                stmt.execute(sql.toString());
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+          while ((line = reader.readLine()) != null) {
+              sqlBuilder.append(line);
+              if (line.trim().endsWith(";")) {
+                  try (PreparedStatement ps = dbConnection.prepareStatement(sqlBuilder.toString(), PreparedStatement.NO_GENERATED_KEYS)) {
+                      ps.execute();
+                  }
+                  sqlBuilder.setLength(0); // Limpa o StringBuilder para o próximo comando
+              }
+          }
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+  }
 }

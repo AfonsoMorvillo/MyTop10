@@ -1,1 +1,1 @@
-insert into musica (id, descricao) values (10, 'Sicko mode');
+-- insert into musica (id, descricao) values (10, 'Sicko mode');
