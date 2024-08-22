@@ -39,6 +39,11 @@ public final class DatabaseConnection {
        connect();
        return connection.prepareStatement(sql);
     }
+    
+    public Statement statement() throws SQLException {
+       connect();
+       return connection.createStatement();
+    }
 
     public void close() {
         try {
