@@ -11,6 +11,8 @@ import controller.DatabaseConnection;
 public class MusicaTop10DAO {
 	public void salvarTop10(int id, List<Musica> musicas ) throws SQLException {
         DatabaseConnection instance = DatabaseConnection.getInstance();
+        
+        deleteAllMusicasInTop10(id, instance);
 
         String sql = "INSERT INTO musica_top10 (ID_musica, ID_top10, ordem_musica) VALUES (?, ?, ?);";
 
@@ -26,7 +28,19 @@ public class MusicaTop10DAO {
         }
     }
 	
-	public List<MusicaTop10> listarTodasMusicaTop10() {
+	private void deleteAllMusicasInTop10( int id, DatabaseConnection instance ) {
+	   String sql = "DELETE FROM musica_top10 WHERE ID_top10 = ?;";
+
+      try (PreparedStatement ps = instance.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             ps.setInt(1, id);
+             ps.execute();
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
+      
+   }
+
+   public List<MusicaTop10> getAllTop10() {
 		 DatabaseConnection instance = DatabaseConnection.getInstance();
 
         List<MusicaTop10> resultado = new ArrayList<>();

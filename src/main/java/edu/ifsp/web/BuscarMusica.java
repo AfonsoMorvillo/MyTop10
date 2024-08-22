@@ -54,7 +54,7 @@ public class BuscarMusica extends HttpServlet {
 
 
    private Musica buscarMusica( String musica ) throws ParseException, SpotifyWebApiException, IOException {
-      SpotifyExample.clientCredentials_Sync();
+//      SpotifyExample.clientCredentials_Sync();
       SearchTracksRequest searchTracksRequest = SpotifyExample.getSpotifyApi().searchTracks( musica ).build();
       final Paging<Track> trackPaging = searchTracksRequest.execute();
 //      

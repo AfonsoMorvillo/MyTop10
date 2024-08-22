@@ -48,14 +48,15 @@ public class SalvarTop10 extends HttpServlet {
 
       HttpSession session = request.getSession();
 
-      Map<Integer, List<Musica>> carrinho = (Map<Integer, List<Musica>>)session.getAttribute( "top10" );
+      Map<Integer, List<Musica>> mapTop10Musicas = (Map<Integer, List<Musica>>)session.getAttribute( "top10" );
 
-      if( carrinho == null ){
-         carrinho = new HashMap<>();
+      if( mapTop10Musicas == null ){
+         mapTop10Musicas = new HashMap<>();
       }
 
       MusicaTop10DAO musicaTop10DAO = new MusicaTop10DAO();
 
+      mapTop10Musicas.putIfAbsent( top10Id, musicas );
 
       try{
          musicaTop10DAO.salvarTop10( top10Id, musicas );
@@ -63,15 +64,7 @@ public class SalvarTop10 extends HttpServlet {
       catch( SQLException e ){
          e.printStackTrace();
       }
-
-      for( Musica musica : musicas ){
-
-         carrinho.putIfAbsent( top10Id, new ArrayList<>() );
-
-         carrinho.get( top10Id ).add( musica );
-      }
-
-      session.setAttribute( "top10", carrinho );
+      session.setAttribute( "top10", mapTop10Musicas );
 
       response.setStatus( HttpServletResponse.SC_OK );
    }

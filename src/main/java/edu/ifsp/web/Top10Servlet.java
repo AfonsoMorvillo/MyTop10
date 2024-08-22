@@ -62,7 +62,7 @@ public class Top10Servlet extends HttpServlet {
       
       List<String> musicasID = listarMusicaTop10PorTitulo.stream().map( m -> m.getMusica().getId() ).collect( Collectors.toList() );
 
-      SpotifyExample.clientCredentials_Sync();
+//      SpotifyExample.clientCredentials_Sync();
 
       String trackIdsString = String.join( ",", musicasID ); // Converte a lista de IDs em uma string separada por vírgulas
       
