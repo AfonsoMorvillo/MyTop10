@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +9,7 @@ import java.util.List;
 import controller.DatabaseConnection;
 
 public class MusicaTop10DAO {
-	public void salvarTop10(int id, ArrayList<Musica> musicas ) throws SQLException {
+	public void salvarTop10(int id, List<Musica> musicas ) throws SQLException {
         DatabaseConnection instance = DatabaseConnection.getInstance();
 
         String sql = "INSERT INTO musica_top10 (ID_musica, ID_top10, ordem_musica) VALUES (?, ?, ?);";
