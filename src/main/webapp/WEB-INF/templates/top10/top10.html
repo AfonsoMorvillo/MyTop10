@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>MyTop10</title>
+
+	<link rel="stylesheet" th:href="@{/css/top10.css}">
+</head>
+
+<body>
+	<h1>MyTop10</h1>
+
+	<div class="container">
+		<div class="board">
+			<div th:each="entry, stat: ${top10musicas}" class="row">
+				<div class="label" th:text="${entry.key}"></div>
+				<div th:if="${entry.value != null}" class="card" th:id="${stat.index}"
+					th:attr="draggable='true', data-music-id=${entry.value.id}">
+					<img class="card-img" th:src="@{${entry.value.capa}}" th:attr="draggable='false'">
+					<div class="card-info">
+						<div>
+							<div class="card-title" th:text="${entry.value.titulo}"></div>
+							<div class="card-album" th:text="${entry.value.album} + ' • ' + ${entry.value.artista}">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="musicas">
+			<div class="buscar-musica">
+				<label for="musica">Buscar música</label>
+				<div class="input-group">
+					<input type="text" id="musica" value="musica">
+					<button class="button" onclick="adicionarMusica()"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<button class="btn-salvar" onclick="salvarTop10()">Salvar</button>
+	<button class="btn-salvar" onclick="salvarSessao()">Encerrar sessão</button>
+
+</body>
+<script th:src="@{/js/cards.js}"></script>
+<script th:src="@{/js/rows.js}"></script>
+<script th:src="@{/js/musicas.js}"></script>
+<script th:src="@{/js/top10.js}"></script>
+
+</html>

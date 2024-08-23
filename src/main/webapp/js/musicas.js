@@ -10,35 +10,30 @@ async function adicionarMusica() {
     }
 
     const cards = document.querySelectorAll('.card');
-    const nextId = cards.length + 1; // Incrementa o número de cards existentes
+    const nextId = cards.length + 1;
 
-    // Configura os parâmetros da requisição
+   
     const params = new URLSearchParams();
     params.set('musicaBusca', textoMusica);
 
     try {
-        // Faz a requisição GET para o servlet
         const response = await fetch(`${buscarMusicaUrl}?${params.toString()}`, {
             method: 'GET'
         });
 
-        // Verifica se a resposta foi bem-sucedida
         if (!response.ok) {
             throw new Error('Erro ao buscar música');
         }
 
-        // Obtém a resposta em formato JSON
         const data = await response.json();
 
-        // Cria uma nova div para a música encontrada
         const container = document.getElementsByClassName('musicas')[0];
-        const novaDiv = document.createElement('div');
         
+        const novaDiv = document.createElement('div');
         novaDiv.className = 'card';
         novaDiv.id = `musica-${nextId}`;
-        novaDiv.draggable = true; // Torna a div arrastável
+        novaDiv.draggable = true;
         novaDiv.dataset.musicId = data.id;
-
         novaDiv.ondragstart = onDragStart;
         novaDiv.ondragend = onDragEnd;
 
@@ -68,7 +63,6 @@ async function adicionarMusica() {
 
         container.appendChild(novaDiv);
 
-        // Limpa o campo de input
         input.value = '';
         
     } catch (error) {

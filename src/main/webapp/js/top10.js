@@ -1,13 +1,12 @@
 async function salvarTop10() {
-	const buscarMusicaUrl = '/MyTop10/salvar'; // URL para o servlet
+	const buscarMusicaUrl = 'salvar';
 
-	// Extrair o ID da URL
 	const urlParts = window.location.pathname.split('/');
 	const id = urlParts[urlParts.length - 1];
 
 	const cardData = {
-		top10Id: id, // Coloca o ID do top 10 fora do array de cards
-		items: [] // Array de CardInfo
+		top10Id: id,
+		items: []
 	};
 
 	rows.forEach((row, index) => {
@@ -17,7 +16,7 @@ async function salvarTop10() {
 
 			const cardInfo = {
 				id: musicId,
-				ordem: index + 1 // Define a posição exata baseada na linha (1-indexado)
+				ordem: index + 1
 			};
 			cardData.items.push(cardInfo);
 		}
@@ -29,7 +28,7 @@ async function salvarTop10() {
 		const response = await fetch(buscarMusicaUrl, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json' // Definindo o tipo de conteúdo como JSON
+				'Content-Type': 'application/json'
 			},
 			body: data
 		});
@@ -41,6 +40,22 @@ async function salvarTop10() {
 			console.error('Erro ao adicionar o Top 10:', response.statusText);
 		}
 	} catch (error) {
-		console.error('Erro ao enviar os dados:', error);
+	}
+}
+async function salvarSessao() {
+	const buscarMusicaUrl = 'salvarSessao';
+
+	try {
+		const response = await fetch(buscarMusicaUrl, {
+			method: 'POST',
+		});
+
+
+		if (response.ok) {
+			console.log('Sessao salva');
+		} else {
+			console.error('Erro salvar sessao');
+		}
+	} catch (error) {
 	}
 }
